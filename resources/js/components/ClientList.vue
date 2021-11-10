@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container" v-if="isLogged">
         <h2>Client Page</h2>
         <div class="text-end">
             <button class="btn btn-info">
@@ -34,7 +34,7 @@
                     <td>{{ client.ville }}</td>
                     <td>{{ client.commentaire }}</td>
                     <td>
-                        <button type="button" class="btn btn-primary" @click.prevent="editClient(client.id)" data-bs-toggle="modal" :data-bs-target="'#modal'+client.id">Update</button>
+                        <button type="button" class="btn btn-primary" @click="editClient(client.id)" data-bs-toggle="modal" :data-bs-target="'#modal'+client.id">Update</button>
                         <button class="btn btn-warning" @click="deleteClient(client.id)">Delete</button>
                     </td>
 
@@ -168,6 +168,7 @@
      
         data() {
             return {
+                isLogged: true,
                 url: document.head.querySelector('meta[name="url"]').content,
                 clients: [],
                 id:"",

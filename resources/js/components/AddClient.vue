@@ -34,7 +34,7 @@
                 <label for="exampleInputPassword1" class="form-label">Commentaire</label>
                 <input type="text-area" v-model="commentaire" class="form-control" >
             </div>
-            <button type="submit" @click.prevent="saveClient" class="btn btn-primary">Submit</button>
+            <button type="submit" @click="saveClient" class="btn btn-primary">Submit</button>
         </form>
     </div>
 </template>

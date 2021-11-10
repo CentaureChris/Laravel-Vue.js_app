@@ -8,6 +8,8 @@ import App from './App.vue';
 import Home from '../js/components/Home.vue';
 import ClientList from '../js/components/ClientList.vue';
 import AddClient from '../js/components/AddClient.vue';
+import LoginForm from '../js/components/LoginForm.vue';
+import Register from '../js/components/Register.vue';
 
 
 
@@ -30,7 +32,15 @@ const routes = [
         name:'/clients/addClient',
         path:'/clients/addClient',
         component: AddClient
-    },
+    },{
+        name:'/login',
+        path:'/login',
+        component: LoginForm
+    },{
+        name:'/register',
+        path:'/register',
+        component: Register
+    }
 ]
 
 const router = new VueRouter( {mode:'history',routes: routes});
