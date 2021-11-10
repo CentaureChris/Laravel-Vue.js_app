@@ -35,7 +35,13 @@ class ClientController extends Controller
 
     public function deleteClient($id)
     {
-        $student = Client::find($id)->delete();
+        $client = Client::find($id)->delete();
         return "ok";
+    }
+
+    public function editClient($id)
+    {
+        $client = Client::find($id);
+        return response()->json($client);
     }
 }

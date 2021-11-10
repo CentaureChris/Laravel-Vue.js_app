@@ -22,8 +22,8 @@
 
                 </tr>
             </thead>
-            <tbody v-for="client in clients" :key="client.id">
-                <tr>
+            <tbody >
+                <tr v-for="client in clients" :key="client.id">
                     <th scope="row">{{ client.id }}</th>
                     <td>{{ client.firstname }}</td>
                     <td>{{ client.lastname }}</td>
@@ -34,8 +34,7 @@
                     <td>{{ client.ville }}</td>
                     <td>{{ client.commentaire }}</td>
                     <td>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal">Update</button>
+                        <button type="button" class="btn btn-primary" @click.prevent="editClient(client.id)" data-bs-toggle="modal" :data-bs-target="'#modal'+client.id">Update</button>
                         <button class="btn btn-warning" @click="deleteClient(client.id)">Delete</button>
                     </td>
 
@@ -45,7 +44,7 @@
 
         <!-- Modal -->
         <form>
-            <div v-for="client in clients" :key="client.id" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            <div v-for="client in clients" :key="client.id" class="modal fade" :id="'modal'+client.id" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -91,7 +90,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" @click.prevent="editClient(client.id)" class="btn btn-primary">Save changes</button>
+                            <button type="submit"  class="btn btn-primary">Save changes</button>
                         </div>
                     </div>
                 </div>
@@ -127,7 +126,20 @@
                 .then(response => this.getResults());
             },
             editClient(id) {
-                    alert(id);
+                this.getResults();
+                    let url = this.url + '/api/edit_client';
+                    axios.get(url+"/"+id)
+                    .then(response => {
+                        console.log(response)
+                        this.editLastname = response.data.lastname;
+                        this.editFirstname = response.data.firstname;
+                        this.editEmail = response.data.emailname;
+                        this.editTel = response.data.tel;
+                        this.editAdresse = response.data.adresse;
+                        this.editCodePostal = response.data.codePostal;
+                        this.editVille = response.data.ville;
+                        this.editCommentaire = response.data.commentaire;
+                    });
                 },
             getResults(page = 1){
                 let url = this.url + '/api/getClients';
@@ -151,6 +163,14 @@
                 editCodePostal:'',
                 editVille:'',
                 editCommentaire:'',
+                firstname:'',
+                lastname:'',
+                email:'',
+                tel:'',
+                adresse:'',
+                codePostal:'',
+                ville:'',
+                commentaire:'',
             }
         }
     }

@@ -22,6 +22,7 @@ Route::prefix('api')->group(function() {
     // Add CLients
     Route::post('save_client',[ClientController::class, 'saveClient']);
     Route::delete('delete_client/{id}',[ClientController::class, 'deleteClient']);
+    Route::get('edit_client/{id}',[ClientController::class, 'editClient']);
 });
 
 Route::get('{any}', function () {

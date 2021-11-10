@@ -2286,7 +2286,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'Client',
   created: function created() {
@@ -2318,16 +2317,30 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     editClient: function editClient(id) {
-      alert(id);
+      var _this3 = this;
+
+      this.getResults();
+      var url = this.url + '/api/edit_client';
+      axios.get(url + "/" + id).then(function (response) {
+        console.log(response);
+        _this3.editLastname = response.data.lastname;
+        _this3.editFirstname = response.data.firstname;
+        _this3.editEmail = response.data.emailname;
+        _this3.editTel = response.data.tel;
+        _this3.editAdresse = response.data.adresse;
+        _this3.editCodePostal = response.data.codePostal;
+        _this3.editVille = response.data.ville;
+        _this3.editCommentaire = response.data.commentaire;
+      });
     },
     getResults: function getResults() {
-      var _this3 = this;
+      var _this4 = this;
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       var url = this.url + '/api/getClients';
       axios.get(url).then(function (response) {
         // console.log(response.data); 
-        _this3.clients = response.data;
+        _this4.clients = response.data;
       });
     }
   },
@@ -2342,7 +2355,15 @@ __webpack_require__.r(__webpack_exports__);
       editAdresse: '',
       editCodePostal: '',
       editVille: '',
-      editCommentaire: ''
+      editCommentaire: '',
+      firstname: '',
+      lastname: '',
+      email: '',
+      tel: '',
+      adresse: '',
+      codePostal: '',
+      ville: '',
+      commentaire: ''
     };
   }
 });
@@ -20659,68 +20680,69 @@ var render = function () {
       ),
     ]),
     _vm._v(" "),
-    _c(
-      "table",
-      { staticClass: "table" },
-      [
-        _vm._m(0),
-        _vm._v(" "),
+    _c("table", { staticClass: "table" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "tbody",
         _vm._l(_vm.clients, function (client) {
-          return _c("tbody", { key: client.id }, [
-            _c("tr", [
-              _c("th", { attrs: { scope: "row" } }, [
-                _vm._v(_vm._s(client.id)),
-              ]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(client.firstname))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(client.lastname))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(client.email))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(client.tel))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(client.adresse))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(client.codePostal))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(client.ville))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(client.commentaire))]),
-              _vm._v(" "),
-              _c("td", [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-primary",
-                    attrs: {
-                      type: "button",
-                      "data-bs-toggle": "modal",
-                      "data-bs-target": "#exampleModal",
+          return _c("tr", { key: client.id }, [
+            _c("th", { attrs: { scope: "row" } }, [_vm._v(_vm._s(client.id))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(client.firstname))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(client.lastname))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(client.email))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(client.tel))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(client.adresse))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(client.codePostal))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(client.ville))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(client.commentaire))]),
+            _vm._v(" "),
+            _c("td", [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-primary",
+                  attrs: {
+                    type: "button",
+                    "data-bs-toggle": "modal",
+                    "data-bs-target": "#modal" + client.id,
+                  },
+                  on: {
+                    click: function ($event) {
+                      $event.preventDefault()
+                      return _vm.editClient(client.id)
                     },
                   },
-                  [_vm._v("Update")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-warning",
-                    on: {
-                      click: function ($event) {
-                        return _vm.deleteClient(client.id)
-                      },
+                },
+                [_vm._v("Update")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-warning",
+                  on: {
+                    click: function ($event) {
+                      return _vm.deleteClient(client.id)
                     },
                   },
-                  [_vm._v("Delete")]
-                ),
-              ]),
+                },
+                [_vm._v("Delete")]
+              ),
             ]),
           ])
         }),
-      ],
-      2
-    ),
+        0
+      ),
+    ]),
     _vm._v(" "),
     _c(
       "form",
@@ -20731,7 +20753,7 @@ var render = function () {
             key: client.id,
             staticClass: "modal fade",
             attrs: {
-              id: "exampleModal",
+              id: "modal" + client.id,
               tabindex: "-1",
               "aria-labelledby": "exampleModalLabel",
               "aria-hidden": "true",
@@ -21008,31 +21030,7 @@ var render = function () {
                   ]),
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "modal-footer" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-secondary",
-                      attrs: { type: "button", "data-bs-dismiss": "modal" },
-                    },
-                    [_vm._v("Close")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-primary",
-                      attrs: { type: "submit" },
-                      on: {
-                        click: function ($event) {
-                          $event.preventDefault()
-                          return _vm.editClient(client.id)
-                        },
-                      },
-                    },
-                    [_vm._v("Save changes")]
-                  ),
-                ]),
+                _vm._m(2, true),
               ]),
             ]),
           ]
@@ -21090,6 +21088,27 @@ var staticRenderFns = [
           "aria-label": "Close",
         },
       }),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary",
+          attrs: { type: "button", "data-bs-dismiss": "modal" },
+        },
+        [_vm._v("Close")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+        [_vm._v("Save changes")]
+      ),
     ])
   },
 ]
