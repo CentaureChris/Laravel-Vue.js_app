@@ -90,7 +90,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit"  class="btn btn-primary">Save changes</button>
+                            <button type="submit"  class="btn btn-primary" @click="updateClient()" >Save changes</button>
                         </div>
                     </div>
                 </div>
@@ -130,10 +130,10 @@
                     let url = this.url + '/api/edit_client';
                     axios.get(url+"/"+id)
                     .then(response => {
-                        console.log(response)
+                        this.id = response.data.id;
                         this.editLastname = response.data.lastname;
                         this.editFirstname = response.data.firstname;
-                        this.editEmail = response.data.emailname;
+                        this.editEmail = response.data.email;
                         this.editTel = response.data.tel;
                         this.editAdresse = response.data.adresse;
                         this.editCodePostal = response.data.codePostal;
@@ -141,6 +141,21 @@
                         this.editCommentaire = response.data.commentaire;
                     });
                 },
+                updateClient(){
+                        let url = this.url + '/api/update_client';
+                        axios.put(url,{
+                            id: this.id,
+                            lastname: this.editLastname,
+                            firstname: this.editFirstname,
+                            email: this.editEmail,
+                            tel: this.edittel,
+                            adresse: this.editAdresse,
+                            codePostal: this.editCodePostal,
+                            ville: this.editVille,
+                            commentaire: this.editCommentaire,
+                            })
+                            .then(response => console.log(response));
+                    },
             getResults(page = 1){
                 let url = this.url + '/api/getClients';
                 axios.get(url)
@@ -155,6 +170,7 @@
             return {
                 url: document.head.querySelector('meta[name="url"]').content,
                 clients: [],
+                id:"",
                 editFirstname:'',
                 editLastname:'',
                 editEmail:'',

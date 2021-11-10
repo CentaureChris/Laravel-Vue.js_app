@@ -2322,15 +2322,31 @@ __webpack_require__.r(__webpack_exports__);
       this.getResults();
       var url = this.url + '/api/edit_client';
       axios.get(url + "/" + id).then(function (response) {
-        console.log(response);
+        _this3.id = response.data.id;
         _this3.editLastname = response.data.lastname;
         _this3.editFirstname = response.data.firstname;
-        _this3.editEmail = response.data.emailname;
+        _this3.editEmail = response.data.email;
         _this3.editTel = response.data.tel;
         _this3.editAdresse = response.data.adresse;
         _this3.editCodePostal = response.data.codePostal;
         _this3.editVille = response.data.ville;
         _this3.editCommentaire = response.data.commentaire;
+      });
+    },
+    updateClient: function updateClient() {
+      var url = this.url + '/api/update_client';
+      axios.put(url, {
+        id: this.id,
+        lastname: this.editLastname,
+        firstname: this.editFirstname,
+        email: this.editEmail,
+        tel: this.edittel,
+        adresse: this.editAdresse,
+        codePostal: this.editCodePostal,
+        ville: this.editVille,
+        commentaire: this.editCommentaire
+      }).then(function (response) {
+        return console.log(response);
       });
     },
     getResults: function getResults() {
@@ -2348,6 +2364,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       url: document.head.querySelector('meta[name="url"]').content,
       clients: [],
+      id: "",
       editFirstname: '',
       editLastname: '',
       editEmail: '',
@@ -21030,7 +21047,30 @@ var render = function () {
                   ]),
                 ]),
                 _vm._v(" "),
-                _vm._m(2, true),
+                _c("div", { staticClass: "modal-footer" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-secondary",
+                      attrs: { type: "button", "data-bs-dismiss": "modal" },
+                    },
+                    [_vm._v("Close")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "submit" },
+                      on: {
+                        click: function ($event) {
+                          return _vm.updateClient()
+                        },
+                      },
+                    },
+                    [_vm._v("Save changes")]
+                  ),
+                ]),
               ]),
             ]),
           ]
@@ -21088,27 +21128,6 @@ var staticRenderFns = [
           "aria-label": "Close",
         },
       }),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-footer" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-secondary",
-          attrs: { type: "button", "data-bs-dismiss": "modal" },
-        },
-        [_vm._v("Close")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        { staticClass: "btn btn-primary", attrs: { type: "submit" } },
-        [_vm._v("Save changes")]
-      ),
     ])
   },
 ]

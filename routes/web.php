@@ -18,11 +18,14 @@ use App\Http\Controllers\ClientController;
 
 Route::prefix('api')->group(function() {
     Route::get('getClients',[ClientController::class, 'getClients']);
-
-    // Add CLients
+    // Add CLient
     Route::post('save_client',[ClientController::class, 'saveClient']);
+    // Delete Client
     Route::delete('delete_client/{id}',[ClientController::class, 'deleteClient']);
+    // Edit Client
     Route::get('edit_client/{id}',[ClientController::class, 'editClient']);
+    // Update Client
+    Route::put('update_client',[ClientController::class, 'updateClient']);
 });
 
 Route::get('{any}', function () {
