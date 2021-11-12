@@ -14,11 +14,16 @@
           <router-link class="nav-link" to="/clients">Clients</router-link>
         </li>
       </ul>
-     <ul>
-       <div>
+     
+
+       <div v-if="logged">
+          <button class="nav-link" @click="logout()">Logout</button>
+       </div>
+       <div v-else>
           <button><router-link class="nav-link" to="/login">Login</router-link></button>
        </div>
-     </ul>
+
+     
     </div>
   </div>
 </nav> 
@@ -26,7 +31,28 @@
 
 <script>
 export default {
-    name:'Navbar'
+  name:'Navbar',
+  data(){
+    return{
+      logged: false,
     }
+  },
+  mounted() {
+    this.isLogged();
+  },
+  methods: {
+    isLogged(){
+      if(localStorage.getItem('token')){
+        this.logged = true
+      }else{
+        this.logged = false
+      }
+    },
+    logout(){
+      localStorage.removeItem('token')
+      this.$router.push('/login')
+    }
+  }
+}
 
 </script>

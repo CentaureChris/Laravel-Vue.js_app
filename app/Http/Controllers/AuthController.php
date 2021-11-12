@@ -31,7 +31,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
+            'email' => 'required|email' ,
             'password' => 'required',
             'device_name' => 'required',
         ]);
@@ -46,5 +46,11 @@ class AuthController extends Controller
     
         return $user->createToken($request->device_name)->plainTextToken;
     
+    }
+
+    public function getUsers()
+    {
+        $users = User::all();
+        return $users;
     }
 }

@@ -3,6 +3,7 @@ window.Vue = require('vue');
 
 import VueRouter from 'vue-router'; 
 Vue.use(VueRouter);
+import store from './components/store/index'; 
 
 import App from './App.vue';
 import Home from '../js/components/Home.vue';
@@ -21,27 +22,27 @@ Vue.use(VueAxios,axios);
 
 const routes = [
     {
-        name:'/',
+        name:'HomeView',
         path:'/',
         component: Home
     },{
-        name:'/clients',
+        name:'ClientsView',
         path:'/clients',
         component: ClientList
     },{
-        name:'/clients/addClient',
+        name:'AddClientView',
         path:'/clients/addClient',
         component: AddClient
     },{
-        name:'/login',
+        name:'LoginView',
         path:'/login',
         component: LoginForm
     },{
-        name:'/register',
+        name:'RegisterView',
         path:'/register',
         component: Register
     }
 ]
 
 const router = new VueRouter( {mode:'history',routes: routes});
-const app = new Vue(Vue.util.extend({ router },App)).$mount('#app');
+const app = new Vue(Vue.util.extend({ router,store },App)).$mount('#app');

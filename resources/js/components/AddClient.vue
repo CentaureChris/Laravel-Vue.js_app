@@ -61,7 +61,6 @@ export default {
             console.log('Component mounted')
             },
     methods: {
-      
         saveClient(){
             let url = this.url + '/api/save_client';
             axios.post(url,{
@@ -73,12 +72,12 @@ export default {
                 codePostal : this.codePostal,
                 ville : this.ville,
                 commentaire: this.commentaire,
-                })
-                this.$router.push('/clients') 
-            },
-         
+            })
+            this.$router.push('/clients') 
         },
+         
+    },
     
-    }
+}
     
 </script>

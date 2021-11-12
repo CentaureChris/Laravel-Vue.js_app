@@ -17,6 +17,7 @@ use App\Http\Controllers\ClientController;
 
 
 Route::prefix('api')->group(function() {
+    // Show Clients
     Route::get('getClients',[ClientController::class, 'getClients']);
     // Add CLient
     Route::post('save_client',[ClientController::class, 'saveClient']);

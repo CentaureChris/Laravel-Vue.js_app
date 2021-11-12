@@ -11,6 +11,11 @@ export default {
     name:'app',
     components: {
         Navbar
-    }
+    },
+    mounted:  
+    function() {
+        // Appeler une action du store
+        // this.$store.dispatch("readObject",{path: this.url + '/api/getClients'})
+		},
 }
 </script>

@@ -21,7 +21,7 @@
 
 <script>
     export default {
-        name: 'LoginForm',
+        name: "LoginForm",
         data(){
             return{
                 formData: {
@@ -29,21 +29,27 @@
                     password:"",
                     device_name:"browser"
                 },
-            url: document.head.querySelector('meta[name="url"]').content,
+            url: document.head.querySelector("meta[name='url']").content,
             errors: {},
             isLogging: false,
-            }
+            };
         },
         methods: {
             login(){
-            let url = this.url + '/api/login';
-            axios.post(url, this.formData).then((response) => {
-                    localStorage.setItem('token',response.data)
-                    this.$router.push('/')
-                }).catch((errors) => {
-                    this.errors = errors.response.data.errors
-                })
+                let url = this.url + "/api/login";
+                // eslint-disable-next-line no-undef
+                axios.post(url, this.formData).then((response) => {
+                        localStorage.setItem("token",response.data);
+                        this.$router.push({name:"ClientsView"});
+                    }).catch((errors) => {
+                        this.errors = errors.response.data.errors;
+                    });
+                // }
+                // this.$store.dispatch("login",{
+                //     path:this.url + '/api/login',
+                //     content:this.formData
+                // })
             }
         }
-    }
+    };
 </script>

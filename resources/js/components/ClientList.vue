@@ -1,5 +1,5 @@
 <template>
-    <div class="container" v-if="isLogged">
+    <div class="container" v-if="user.token !== null">
         <h2>Client Page</h2>
         <div class="text-end">
             <button class="btn btn-info">
@@ -37,7 +37,6 @@
                         <button type="button" class="btn btn-primary" @click="editClient(client.id)" data-bs-toggle="modal" :data-bs-target="'#modal'+client.id">Update</button>
                         <button class="btn btn-warning" @click="deleteClient(client.id)">Delete</button>
                     </td>
-
                 </tr>
             </tbody>
         </table>
@@ -96,79 +95,16 @@
                 </div>
             </div>
         </form>
-
     </div>
 </template>
 
 <script>
     export default {
-        name: 'Client',
-        created() {
-            this.loadData();
-        },
-        methods: {
-            mounted() {
-                this.getResults();
-            },
-            loadData() {
-                let url = this.url + '/api/getClients';
-                this.axios.get(url).then(response => {
-                    this.clients = response.data
-                    // console.log(this.clients)
-                });
-            },
-            deleteClient(id){
-                if(!confirm("Are you sure to delete")){
-                    return false
-                    };
-                let url = this.url + '/api/delete_client';
-                axios.delete( url+'/' + id )
-                .then(response => this.getResults());
-            },
-            editClient(id) {
-                this.getResults();
-                    let url = this.url + '/api/edit_client';
-                    axios.get(url+"/"+id)
-                    .then(response => {
-                        this.id = response.data.id;
-                        this.editLastname = response.data.lastname;
-                        this.editFirstname = response.data.firstname;
-                        this.editEmail = response.data.email;
-                        this.editTel = response.data.tel;
-                        this.editAdresse = response.data.adresse;
-                        this.editCodePostal = response.data.codePostal;
-                        this.editVille = response.data.ville;
-                        this.editCommentaire = response.data.commentaire;
-                    });
-                },
-                updateClient(){
-                        let url = this.url + '/api/update_client';
-                        axios.put(url,{
-                            id: this.id,
-                            lastname: this.editLastname,
-                            firstname: this.editFirstname,
-                            email: this.editEmail,
-                            tel: this.edittel,
-                            adresse: this.editAdresse,
-                            codePostal: this.editCodePostal,
-                            ville: this.editVille,
-                            commentaire: this.editCommentaire,
-                            })
-                            .then(response => console.log(response));
-                    },
-            getResults(page = 1){
-                let url = this.url + '/api/getClients';
-                axios.get(url)
-                .then(response => {
-                    // console.log(response.data); 
-                    this.clients = response.data;
-                    });
-                }
-        },
-     
+        name: "Client",
         data() {
             return {
                 isLogged: true,
+                user: [], 
                 url: document.head.querySelector('meta[name="url"]').content,
                 clients: [],
                 id:"",
@@ -189,7 +125,85 @@
                 ville:'',
                 commentaire:'',
             }
-        }
+        },
+        created() {
+            this.loadData();
+            this.getUsers();
+        },
+        methods: {
+            mounted() {
+                this.getResults(),
+                this.deleteClient()
+            },
+            loadData() {
+                let url = this.url + '/api/getClients';
+                this.axios.get(url).then(response => {
+                    this.clients = response.data
+                });
+            },
+            deleteClient(id){
+                if(!confirm("Are you sure to delete")){
+                    return false
+                    };
+                let url = this.url + '/api/delete_client';
+                axios.delete( url+'/' + id )
+                .then(response => this.getResults());
+            },
+            editClient(id) {
+            this.getResults();
+                let url = this.url + '/api/edit_client';
+                axios.get(url+"/"+id)
+                .then(response => {
+                    this.id = response.data.id;
+                    this.editLastname = response.data.lastname;
+                    this.editFirstname = response.data.firstname;
+                    this.editEmail = response.data.email;
+                    this.editTel = response.data.tel;
+                    this.editAdresse = response.data.adresse;
+                    this.editCodePostal = response.data.codePostal;
+                    this.editVille = response.data.ville;
+                    this.editCommentaire = response.data.commentaire;
+                });
+            },
+            updateClient(){
+                let url = this.url + '/api/update_client';
+                axios.put(url,{
+                    id: this.id,
+                    lastname: this.editLastname,
+                    firstname: this.editFirstname,
+                    email: this.editEmail,
+                    tel: this.editTel,
+                    adresse: this.editAdresse,
+                    codePostal: this.editCodePostal,
+                    ville: this.editVille,
+                    commentaire: this.editCommentaire,
+                })
+                .then(response => console.log(response));
+            },
+            getResults(page = 1){
+                let url = this.url + '/api/getClients';
+                axios.get(url)
+                .then(response => {
+                    // console.log(response.data); 
+                    this.clients = response.data;
+                });
+            },
+            getUsers() {
+                let url = this.url + '/api/getUsers';
+                let token = localStorage.getItem('token')
+                this.axios.get(url).then(response => {
+                    this.user = {...response.data,token}
+                    // console.log(this.user)
+                });
+            },
+         
+            // getUsers(){
+            //     let url = this.url + '/api/getClients';
+            //     this.axios.get(url).then(response => {
+            //         this.clients = response.data
+            //     });
+            // }
+        },
     }
 
         
