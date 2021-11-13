@@ -2415,7 +2415,6 @@ __webpack_require__.r(__webpack_exports__);
     getResults: function getResults() {
       var _this4 = this;
 
-      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       var url = this.url + '/api/getClients';
       axios.get(url).then(function (response) {
         // console.log(response.data); 
@@ -2895,7 +2894,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     mounted: function mounted() {
-      this.getResults(), this.deleteUser();
+      this.getResultsUser(), this.deleteUser();
     },
     loadData: function loadData() {
       var _this = this;
@@ -2918,10 +2917,9 @@ __webpack_require__.r(__webpack_exports__);
         return _this2.getResults();
       });
     },
-    getResults: function getResults() {
+    getResultsUser: function getResultsUser() {
       var _this3 = this;
 
-      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       var url = this.url + '/getUsers';
       axios.get(url).then(function (response) {
         _this3.users = response.data;

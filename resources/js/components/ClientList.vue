@@ -199,7 +199,7 @@
                 })
                 .then(response => console.log(response));
             },
-            getResults(page = 1){
+            getResults(){
                 let url = this.url + '/api/getClients';
                 axios.get(url)
                 .then(response => {

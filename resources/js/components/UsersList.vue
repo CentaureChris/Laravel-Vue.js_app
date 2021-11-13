@@ -85,7 +85,7 @@
         },
         methods: {
             mounted() {
-                this.getResults(),
+                this.getResultsUser(),
                 this.deleteUser()             
             },
             loadData() {
@@ -102,11 +102,12 @@
                 axios.delete( url+'/' + id )
                 .then(response => this.getResults());
             },
-            getResults(page = 1){
+            getResultsUser(){
                 let url = this.url +'/getUsers';
                 axios.get(url)
                 .then(response => {
-                    this.users = response.data;
+                   this.users = response.data;
+
                 });
             },
         },
