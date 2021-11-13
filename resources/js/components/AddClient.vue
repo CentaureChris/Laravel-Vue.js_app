@@ -31,14 +31,20 @@
                 <input type="text" v-model="ville" class="form-control" >
             </div>
             <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Commentaire</label>
-                <input type="text-area" v-model="commentaire" class="form-control" >
+                <label for="txtarea" class="form-label">Commentaire</label>
+                <textarea id="txtarea" v-model="commentaire" ></textarea>
             </div>
             <button type="submit" @click="saveClient" class="btn btn-primary">Submit</button>
         </form>
     </div>
 </template>
-
+<style>
+   textarea {
+       height: 100px;
+       width: 100%;
+        border: 1px solid ;
+    }
+</style>
 <script>
 export default {
     name:'AddClient',

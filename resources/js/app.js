@@ -11,6 +11,8 @@ import ClientList from '../js/components/ClientList.vue';
 import AddClient from '../js/components/AddClient.vue';
 import LoginForm from '../js/components/LoginForm.vue';
 import Register from '../js/components/Register.vue';
+import UserView from '../js/components/UsersList.vue';
+
 
 
 
@@ -41,7 +43,11 @@ const routes = [
         name:'RegisterView',
         path:'/register',
         component: Register
-    }
+    },{
+        name:'UsersView',
+        path:'/user',
+        component: UserView
+    },
 ]
 
 const router = new VueRouter( {mode:'history',routes: routes});

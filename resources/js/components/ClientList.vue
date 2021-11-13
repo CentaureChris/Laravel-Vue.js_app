@@ -1,25 +1,24 @@
 <template>
-    <div class="container" v-if="user.token !== null">
+    <div class="m-3" v-if="user.token !== null">
         <h2>Client Page</h2>
         <div class="text-end">
             <button class="btn btn-info">
                 <router-link class="nav-link" to="clients/addClient">AddClients</router-link>
             </button>
         </div>
-        <table class="table">
+        <table class="table w-100">
             <thead>
-                <tr>
+                <tr class="text-center">
                     <th scope="col">id</th>
                     <th scope="col">First</th>
                     <th scope="col">Last</th>
                     <th scope="col">Email</th>
                     <th scope="col">Tel</th>
                     <th scope="col">Adresse</th>
-                    <th scope="col">Code Postal</th>
+                    <th scope="col">C.Postal</th>
                     <th scope="col">Ville</th>
-                    <th scope="col">Commentaire</th>
+                    <th scope="col" >Commentaire</th>
                     <th scope="col">Action</th>
-
                 </tr>
             </thead>
             <tbody >
@@ -29,13 +28,19 @@
                     <td>{{ client.lastname }}</td>
                     <td>{{ client.email }}</td>
                     <td>{{ client.tel}}</td>
-                    <td>{{ client.adresse}}</td>
+                    <td>
+                        <p>
+                            {{ client.adresse}}
+                        </p>
+                    </td>
                     <td>{{ client.codePostal }}</td>
                     <td>{{ client.ville }}</td>
-                    <td>{{ client.commentaire }}</td>
+                    <textarea v-model="client.commentaire" style="box-sizing: border-box;" disabled></textarea>
                     <td>
-                        <button type="button" class="btn btn-primary" @click="editClient(client.id)" data-bs-toggle="modal" :data-bs-target="'#modal'+client.id">Update</button>
-                        <button class="btn btn-warning" @click="deleteClient(client.id)">Delete</button>
+                        <div class="row d-flex justify-content-center">
+                            <button type="button" class="btn btn-primary m-1 col-6" style="width:90%;" @click="editClient(client.id)" data-bs-toggle="modal" :data-bs-target="'#modal'+client.id">Update</button>
+                            <button class="btn btn-warning m-1 col-6" style="width:90%;" @click="deleteClient(client.id)">Delete</button>
+                        </div>
                     </td>
                 </tr>
             </tbody>
@@ -84,7 +89,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="exampleInputPassword1" class="form-label">Commentaire</label>
-                                <input type="text-area" v-model="editCommentaire" class="form-control">
+                                <textarea type="text-area" v-model="editCommentaire" class="form-control"></textarea>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -97,6 +102,20 @@
         </form>
     </div>
 </template>
+
+<style>
+    td{
+        position: relative
+    }
+    textarea {
+        resize: none; 
+        border-left: none;
+        border-right: none;
+        border-bottom: none;
+        border-top: 1px solid lightgrey;
+
+    }
+</style>
 
 <script>
     export default {
@@ -128,7 +147,7 @@
         },
         created() {
             this.loadData();
-            this.getUsers();
+            // this.getUsers();
         },
         methods: {
             mounted() {
@@ -188,14 +207,7 @@
                     this.clients = response.data;
                 });
             },
-            getUsers() {
-                let url = this.url + '/api/getUsers';
-                let token = localStorage.getItem('token')
-                this.axios.get(url).then(response => {
-                    this.user = {...response.data,token}
-                    // console.log(this.user)
-                });
-            },
+           
          
             // getUsers(){
             //     let url = this.url + '/api/getClients';

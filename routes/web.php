@@ -27,6 +27,8 @@ Route::prefix('api')->group(function() {
     Route::get('edit_client/{id}',[ClientController::class, 'editClient']);
     // Update Client
     Route::put('update_client',[ClientController::class, 'updateClient']);
+
+   
 });
 
 Route::get('{any}', function () {

@@ -11,7 +11,10 @@
         <router-link class="nav-link" to="/">Home</router-link>
       </li>
         <li class="nav-item">
-          <router-link class="nav-link" to="/clients">Clients</router-link>
+          <router-link class="nav-link" to="/clients">Client List</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link class="nav-link" to="/user">User List</router-link>
         </li>
       </ul>
      

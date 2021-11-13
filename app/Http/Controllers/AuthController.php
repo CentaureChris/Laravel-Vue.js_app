@@ -20,9 +20,10 @@ class AuthController extends Controller
         ]);
 
         User::create([
+            'id' => $request->id,
             'name'=> $request->name,
             'email'=> $request->email,
-            'password'=> Hash::make($request->password),
+            'password'=> $request->password, //Hash::make($request->password), 
         ]);
 
         return response()->json(['msg' => "Registered Successfully"]);
@@ -37,8 +38,11 @@ class AuthController extends Controller
         ]);
     
         $user = User::where('email', $request->email)->first();
+
+        $pass = User::where('password', $request->password)->first();
+
     
-        if (! $user || ! Hash::check($request->password, $user->password)) {
+        if (! $user || !$pass /* !Hash::check($request->password, $user->password)*/) {
             throw ValidationException::withMessages([
                 'email' => ['email or password are incorrects'],
             ]);
@@ -52,5 +56,11 @@ class AuthController extends Controller
     {
         $users = User::all();
         return $users;
+    }
+
+    public function deleteUser($id)
+    {
+        $user = User::find($id)->delete();
+        return "ok";
     }
 }

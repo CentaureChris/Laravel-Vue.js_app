@@ -18,10 +18,14 @@ use App\Http\Controllers\AuthController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
+// Create count User
 Route::post('register', [AuthController::class, 'register']);
+// Login
 Route::post('login', [AuthController::class, 'login']);
+// Get all Users
 Route::get('getUsers',[AuthController::class, 'getUsers']);
+// delete User
+Route::delete('delete_user/{id}',[AuthController::class, 'deleteUser']);
 
 
 

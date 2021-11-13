@@ -49,7 +49,7 @@
             register(){
             let url = this.url + '/api/register';
             axios.post(url, this.formData).then((response) => {
-                this.$router.push({name:"LoginView"});
+                this.$router.push({ path: '/login' })
                 }).catch((errors) => {
                     this.errors = errors.response.data.errors
                 })
