@@ -32,6 +32,7 @@
                 </div>
             </div>
         </div>
+        <script type='text/javascript' src='./config.js'></script>
         <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyByOJ-DUytmEbE7TATkhDllphsxiJ0of94"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
         <!-- JavaScript Bundle with Popper -->
