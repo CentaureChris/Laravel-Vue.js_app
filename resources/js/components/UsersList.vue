@@ -1,5 +1,5 @@
 <template>
-    <div class="m-3 container" >
+    <div class="m-3 container" v-if="Logged()">
         <h2>User Page</h2>
       
         <table class="table">
@@ -12,14 +12,14 @@
                 </tr>
             </thead>
             <tbody >
-                <tr v-for="user in users" :key="user.id">
+                <tr v-for="user in users" :key="user.id" class="text-center">
                     <th scope="row">{{ user.id }}</th>
                     <td>{{ user.name }}</td>
                     <td>{{ user.email }}</td>
                     <td>{{ user.password}}</td>
                     <td>
                         <div class="row d-flex justify-content-center">
-                            <button type="button" class="btn btn-primary m-1 col-6" style="width:90%;"  data-bs-toggle="modal" :data-bs-target="'#modal'+user.id">Update</button>
+                            <button type="button" class="btn btn-primary m-1 col-6" style="width:90%;" @click="editUser(user.id)" data-bs-toggle="modal" :data-bs-target="'#modal'+user.id">Update</button>
                             <button  class="btn btn-warning m-1 col-6" style="width:90%;" @click="deleteUser(user.id)">Delete</button>
                         </div>
                     </td>
@@ -40,14 +40,11 @@
                         <div class="modal-body">
 
                             <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Lastname</label>
+                                <label for="exampleInputEmail1" class="form-label">Name</label>
                                 <input type="text" v-model="editName" class="form-control"
                                     aria-describedby="emailHelp">
                             </div>
-                            <div class="mb-3">
-                                <label for="exampleInputPassword1" class="form-label">Firstname</label>
-                                <input type="text" v-model="editPassword" class="form-control">
-                            </div>
+
                             <div class="mb-3">
                                 <label for="exampleInputPassword1" class="form-label">Email</label>
                                 <input type="email" v-model="editEmail" class="form-control">
@@ -55,7 +52,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit"  class="btn btn-primary"  >Save changes</button>
+                            <button type="submit"  class="btn btn-primary" @click="updateUser()" >Save changes</button>
                         </div>
                     </div>
                 </div>
@@ -85,31 +82,73 @@
         },
         methods: {
             mounted() {
-                this.getResultsUser(),
+                this.getResults(),
                 this.deleteUser()             
             },
+            computed(){
+                this.getResults()
+                this.deleteUser()
+            },
+
             loadData() {
                 let url = this.url + '/api/getUsers';
                 this.axios.get(url).then(response => {
                     this.users = response.data
+                    console.log(this.users)
                 });
             },
+
+             editUser(id) {
+            this.getResults();
+                let url = this.url + '/api/edit_user';
+                axios.get(url+"/"+id)
+                .then(response => {
+                    this.id = response.data.id;
+                    this.editName = response.data.name;
+                    this.editEmail = response.data.email;
+                    this.editPassword = response.data.password
+                    console.log(response);
+                });
+            },
+
+            updateUser(){
+                let url = this.url + '/api/update_user';
+                axios.put(url,{
+                    id: this.id,
+                    name: this.editName,
+                    email: this.editEmail,
+                    password: this.editPassword,
+                    
+                })
+                .then(response => console.log(response));
+            },
+
             deleteUser(id){
-                if(!confirm("Are you sure to delete "+id)){
-                    return false
-                    };
+                if(!confirm(`Delete user with id ${id}`)){
+                    return false;
+                };
                 let url = this.url + '/api/delete_user';
                 axios.delete( url+'/' + id )
                 .then(response => this.getResults());
             },
-            getResultsUser(){
-                let url = this.url +'/getUsers';
+
+            getResults(page = 1){
+                let url = this.url + '/api/getUsers';
                 axios.get(url)
                 .then(response => {
-                   this.users = response.data;
-
+                    console.log(response.data); 
+                    this.users = response.data;
                 });
             },
+
+            Logged(){
+               if(localStorage.getItem('token')){
+                   return true
+               }else{
+                   alert('You must be logged to acces!')
+                   this.$router.push('/login');
+               }
+           }
         },
     }
 

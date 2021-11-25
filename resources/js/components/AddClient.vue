@@ -79,7 +79,7 @@ export default {
                 ville : this.ville,
                 commentaire: this.commentaire,
             })
-            this.$router.push('/clients') 
+            this.$router.push('/api/clients') 
         },
          
     },

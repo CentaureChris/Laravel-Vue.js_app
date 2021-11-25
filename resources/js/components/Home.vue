@@ -3,12 +3,13 @@
         <h2>Home form contact</h2>
         <form>
             <div class="row">
+
                  <div class="mb-3 col-6">
-                    <label for="exampleInputEmail1" class="form-label">Lastname</label>
+                    <label for="exampleInputEmail1" class="form-label">Firstname</label>
                     <input type="text" v-model="firstname" class="form-control"  aria-describedby="emailHelp">
                 </div>
                 <div class="mb-3 col-6">
-                    <label for="exampleInputPassword1" class="form-label">Firstname</label>
+                    <label for="exampleInputPassword1" class="form-label">Lastname</label>
                     <input type="text" v-model="lastname" class="form-control" >
                 </div>
             </div>
@@ -16,11 +17,11 @@
            <div class="row">
                <div class="mb-3 col-6">
                     <label for="exampleInputPassword1" class="form-label">Email</label>
-                    <input type="email" v-model="email" class="form-control" >
+                    <input type="email" v-model="email" class="form-control" required>
                 </div>
                 <div class="mb-3 col-6">
                     <label for="exampleInputPassword1" class="form-label">Tel</label>
-                    <input type="tel" v-model="tel" class="form-control" maxlength="10">
+                    <input type="tel" v-model="tel" class="form-control" maxlength="10" required>
                 </div>
            </div>
 
@@ -45,12 +46,24 @@
             </div>
 
             
-            <button type="submit" @click="saveClient" class="btn btn-primary ml-3-">Submit</button>
+            <button type="submit" @click.prevent="saveClient" class="btn btn-primary ml-3-">Submit</button>
         </form>
 
         <br/>
-
-        <div class="w-100 border p-2"> 
+        <div v-if="this.id||this.lastname||this.firstname" class="card" style="width: 36rem;">
+            <div class="card-body">
+                <h5 class="card-title">{{ firstname }} {{ lastname }}</h5>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">{{ email }}</li>
+                <li class="list-group-item">{{ tel }}</li>
+                <li class="list-group-item">{{ adresse }}<br>{{ codePostal }}, {{ ville }}</li>
+            </ul>
+            <div class="card-body" style="text-align: center;">
+                <textarea v-model="commentaire" disabled></textarea>
+            </div>
+        </div>
+        <!-- <div class="w-100 border p-2"> 
             <div class="row">
                 <div class="col-6">
                     <p>{{ firstname }}</p>
@@ -64,19 +77,20 @@
                     <p>{{ ville }}</p>
                 </div>
                 <div style="text-align: center; width ">
-                    <textarea v-model="commentaire" ></textarea>
+                    <textarea v-model="commentaire" disabled></textarea>
                 </div>
             </div>
-
-        </div>
+        </div> -->
     </div>
 </template>
 
 <script>
+
 export default {
     name:'Home',
     data(){
         return {
+            id:"",
             firstname:'',
             lastname:'',
             email:'',
@@ -89,11 +103,14 @@ export default {
         }
     },
     mounted() {
+       
         const autocomplete = new google.maps.places.Autocomplete(this.$refs["origin"]);
         autocomplete.addListener("place_changed", () => {
             const place = autocomplete.getPlace()
-            // console.log(place.formatted_address);
-            this.adresse = place.formatted_address
+            // console.log(place.address_components);
+            this.adresse = place.address_components[0].long_name+" "+place.address_components[1].long_name;
+            this.ville = place.address_components[2].long_name;
+            this.codePostal = place.address_components[6].long_name
         },)
         $('form input').keydown(function (e) {
             if (e.keyCode == 13) {
@@ -108,16 +125,38 @@ export default {
                 if(!confirm("Do u really want to save yours data ?")){
                     return false
                 };
-            axios.post(url,{
-                firstname : this.firstname,
-                lastname : this.lastname,
-                email : this.email,
-                tel : this.tel,
-                adresse : this.adresse,
-                codePostal : this.codePostal,
-                ville : this.ville,
-                commentaire: this.commentaire,
-            })
+                if(this.id){
+                    let updateUrl = this.url + '/api/update_client';
+                    axios.put(updateUrl,{
+                        id: this.id,
+                        firstname : this.firstname,
+                        lastname : this.lastname,
+                        email : this.email,
+                        tel : this.tel,
+                        adresse : this.adresse,
+                        codePostal : this.codePostal,
+                        ville : this.ville,
+                        commentaire: this.commentaire,
+                    })
+                    .then(response => console.log(response));
+                }else{
+                axios.post(url,{
+                    id: this.id,
+                    firstname : this.firstname,
+                    lastname : this.lastname,
+                    email : this.email,
+                    tel : this.tel,
+                    adresse : this.adresse,
+                    codePostal : this.codePostal,
+                    ville : this.ville,
+                    commentaire: this.commentaire,
+                })
+                .then(response => {
+                    // console.log(response.data)
+                    this.id = response.data.id
+                })
+            }  
+            alert('Contact enregister!');
         }, 
         noEnter(e) {
 		    e = e || window.event;

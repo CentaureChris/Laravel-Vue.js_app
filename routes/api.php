@@ -26,6 +26,9 @@ Route::post('login', [AuthController::class, 'login']);
 Route::get('getUsers',[AuthController::class, 'getUsers']);
 // delete User
 Route::delete('delete_user/{id}',[AuthController::class, 'deleteUser']);
-
+// editUser
+Route::get('edit_user/{id}',[AuthController::class, 'editUser']);
+// update
+Route::put('update_user',[AuthController::class, 'updateUser']);
 
 

@@ -11,7 +11,7 @@
                 <input type="password"  v-model="formData.password" class="form-control" id="exampleInputPassword1">
                 <p class="text-danger" v-text="errors.email"></p>
             </div>
-            <button type="submit" class="btn btn-primary" @click.prevent="login()">Submit</button>
+            <button type="submit" class="btn btn-primary" @click.prevent="login()" >Submit</button>
             <div class=" text-end">
                 <router-link to="/register">Create New account</router-link>
             </div>
@@ -41,6 +41,7 @@
                 axios.post(url, this.formData).then((response) => {
                         localStorage.setItem("token",response.data);
                         this.$router.push({name:"ClientsView"});
+                        window.location.reload();
                     }).catch((errors) => {
                         this.errors = errors.response.data.errors;
                     });

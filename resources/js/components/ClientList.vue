@@ -1,5 +1,5 @@
 <template>
-    <div class="m-3" v-if="user.token !== null">
+    <div class="m-3" v-if="Logged()">
         <h2>Client Page</h2>
         <div class="text-end">
             <button class="btn btn-info">
@@ -73,7 +73,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="exampleInputPassword1" class="form-label">Tel</label>
-                                <input type="tel" v-model="editTel" class="form-control">
+                                <input type="tel" v-model="editTel" class="form-control" maxlength="10">
                             </div>
                             <div class="mb-3">
                                 <label for="exampleInputPassword1" class="form-label">Adresse</label>
@@ -122,7 +122,6 @@
         name: "Client",
         data() {
             return {
-                isLogged: true,
                 user: [], 
                 url: document.head.querySelector('meta[name="url"]').content,
                 clients: [],
@@ -147,17 +146,20 @@
         },
         created() {
             this.loadData();
-            // this.getUsers();
+
         },
         methods: {
             mounted() {
-                this.getResults(),
-                this.deleteClient()
+                this.getResults()
+                // this.deleteClient()
             },
             loadData() {
                 let url = this.url + '/api/getClients';
                 this.axios.get(url).then(response => {
                     this.clients = response.data
+                    let token = localStorage.getItem('token')
+                    this.users = {...this.user,token}
+                    console.log(this.user)
                 });
             },
             deleteClient(id){
@@ -199,20 +201,28 @@
                 })
                 .then(response => console.log(response));
             },
-            getResults(){
+            getResults(page = 1){
                 let url = this.url + '/api/getClients';
                 axios.get(url)
                 .then(response => {
-                    // console.log(response.data); 
+                    console.log(response.data); 
                     this.clients = response.data;
                 });
             },
-           
+           Logged(){
+               if(localStorage.getItem('token')){
+                   return true
+               }else{
+                   alert('You must be logged to acces!')
+                   this.$router.push('/login');
+               }
+           }
          
             // getUsers(){
-            //     let url = this.url + '/api/getClients';
+            //     let url = this.url + '/api/getUsers';
             //     this.axios.get(url).then(response => {
-            //         this.clients = response.data
+            //         this.users = response.data
+            //         console.log(this.users)
             //     });
             // }
         },

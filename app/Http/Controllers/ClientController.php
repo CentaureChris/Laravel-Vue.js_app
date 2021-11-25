@@ -16,7 +16,7 @@ class ClientController extends Controller
     public function saveClient(Request $request)
     {
         $client = new Client;
-        
+        $client->id = $request->id;
         $client->firstname = $request->firstname;
         $client->lastname = $request->lastname;
         $client->email = $request->email;
@@ -27,7 +27,7 @@ class ClientController extends Controller
         $client->commentaire = $request->commentaire;
 
         if($client->save()) {
-            return response()->json(['status'=> true, 'message' => "Client added Successfully"]);
+            return response()->json($client);
         }else{
             return response ()->json(['status' => false, 'message' => 'There is some problem. please try again']);
         }
@@ -35,6 +35,7 @@ class ClientController extends Controller
 
     public function deleteClient($id)
     {
+        // {{ AuthController::isLogged(); }}
         $client = Client::find($id)->delete();
         return "ok";
     }

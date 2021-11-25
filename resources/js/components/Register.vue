@@ -21,7 +21,7 @@
                 <input type="password"  v-model="formData.confirmPassword" class="form-control" id="exampleInputPassword2">
                 <p class="text-danger" v-text="errors.email"></p>
             </div>
-            <button type="submit" class="btn btn-primary" @click="register()">Register</button>
+            <button type="submit" class="btn btn-primary" @click.prevent="register()">Register</button>
             <div class=" text-end">
                 <router-link to="/login">Already have an account</router-link>
             </div>
@@ -49,7 +49,7 @@
             register(){
             let url = this.url + '/api/register';
             axios.post(url, this.formData).then((response) => {
-                this.$router.push({ path: '/login' })
+                this.$router.push(('/login'))
                 }).catch((errors) => {
                     this.errors = errors.response.data.errors
                 })

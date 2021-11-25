@@ -10,16 +10,14 @@
         <li class="nav-item">
         <router-link class="nav-link" to="/">Home</router-link>
       </li>
-        <li class="nav-item">
-          <router-link class="nav-link" to="/clients">Client List</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link class="nav-link" to="/user">User List</router-link>
+        <li v-if="isLogged()" class="nav-item">
+          <router-link class="nav-link d-inline-block " to="/clients">Client List</router-link>
+          <router-link class="nav-link d-inline-block" to="/user">User List</router-link>
         </li>
       </ul>
      
 
-       <div v-if="logged">
+       <div v-if="isLogged()">
           <button class="nav-link" @click="logout()">Logout</button>
        </div>
        <div v-else>
@@ -37,7 +35,7 @@ export default {
   name:'Navbar',
   data(){
     return{
-      logged: false,
+    
     }
   },
   mounted() {
@@ -46,14 +44,15 @@ export default {
   methods: {
     isLogged(){
       if(localStorage.getItem('token')){
-        this.logged = true
+        return true;
       }else{
-        this.logged = false
+        return false
       }
     },
     logout(){
       localStorage.removeItem('token')
       this.$router.push('/login')
+      window.location.reload();
     }
   }
 }
